@@ -1,0 +1,6 @@
+%ul
+  - @items.each do |item|
+    %li
+      = item.name
+%a
+  = link_to "new item", new_item_path
