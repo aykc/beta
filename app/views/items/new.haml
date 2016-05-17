@@ -3,19 +3,20 @@
 
 %h1
   = @category.name
-- form_for @item do |f|
+= form_for @item do |f|
   %p
     = f.label :name
   %p
     = f.text_field :name
+  = f.hidden_field :category_id, value: @category.id
   %div
     - @category.option_groups.each do |group|
-      %h2
+      %p
         = group.name
       %ul
         - group.options.each do |option|
-          - f.fields_for @item.option_values.new do |val|
+          = f.fields_for :properties do |property|
             %li
               = option.name
-              = val.collection_select(:option_value_id, option.option_values.all, :id, :value)
+              = property.collection_select(:option_value_id, option.option_values.all, :id, :value)
   = f.submit "Create new"

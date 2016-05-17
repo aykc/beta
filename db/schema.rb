@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160515121412) do
+ActiveRecord::Schema.define(version: 20160517194057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,10 +66,22 @@ ActiveRecord::Schema.define(version: 20160515121412) do
 
   add_index "options", ["option_group_id"], name: "index_options_on_option_group_id", using: :btree
 
+  create_table "properties", force: :cascade do |t|
+    t.integer  "item_id"
+    t.integer  "option_value_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "properties", ["item_id"], name: "index_properties_on_item_id", using: :btree
+  add_index "properties", ["option_value_id"], name: "index_properties_on_option_value_id", using: :btree
+
   add_foreign_key "items", "categories"
   add_foreign_key "items_option_values", "items"
   add_foreign_key "items_option_values", "option_values"
   add_foreign_key "option_groups", "categories"
   add_foreign_key "option_values", "options"
   add_foreign_key "options", "option_groups"
+  add_foreign_key "properties", "items"
+  add_foreign_key "properties", "option_values"
 end

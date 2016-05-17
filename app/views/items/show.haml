@@ -1,0 +1,16 @@
+%a
+  = link_to "back", items_path
+
+%p
+  = @item.category.name
+%h1
+  = @item.name
+%div
+  - @item.option_groups.distinct.each do |group|
+    %p
+      = group.name
+    %ul
+      - group.options.each do |option|
+        %li
+          = option.name + ':'
+          = option.option_values.first.value
