@@ -11,13 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517194057) do
+ActiveRecord::Schema.define(version: 20160804192628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "integer_values", force: :cascade do |t|
+    t.integer  "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -49,21 +55,27 @@ ActiveRecord::Schema.define(version: 20160517194057) do
   add_index "option_groups", ["category_id"], name: "index_option_groups_on_category_id", using: :btree
 
   create_table "option_values", force: :cascade do |t|
-    t.string   "value"
     t.integer  "option_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "value_element_id"
+    t.string   "value_element_type"
   end
 
   add_index "option_values", ["option_id"], name: "index_option_values_on_option_id", using: :btree
+  add_index "option_values", ["value_element_type", "value_element_id"], name: "index_option_values_on_value_element_type_and_value_element_id", using: :btree
 
   create_table "options", force: :cascade do |t|
     t.string   "name"
     t.integer  "option_group_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "option_element_id"
+    t.string   "option_element_type"
+    t.string   "value_type"
   end
 
+  add_index "options", ["option_element_type", "option_element_id"], name: "index_options_on_option_element_type_and_option_element_id", using: :btree
   add_index "options", ["option_group_id"], name: "index_options_on_option_group_id", using: :btree
 
   create_table "properties", force: :cascade do |t|
@@ -75,6 +87,22 @@ ActiveRecord::Schema.define(version: 20160517194057) do
 
   add_index "properties", ["item_id"], name: "index_properties_on_item_id", using: :btree
   add_index "properties", ["option_value_id"], name: "index_properties_on_option_value_id", using: :btree
+
+  create_table "select_options", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "string_values", force: :cascade do |t|
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "text_options", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   add_foreign_key "items", "categories"
   add_foreign_key "items_option_values", "items"

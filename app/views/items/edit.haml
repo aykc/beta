@@ -6,7 +6,7 @@
 %h1
   = @item.name
 %div
-  - @option_groups.each do |group|
+  - @item.option_groups.each do |group|
     %p
       = group.name
     %ul

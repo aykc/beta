@@ -15,8 +15,7 @@
         = group.name
       %ul
         - group.options.each do |option|
-          = f.fields_for :properties do |property|
+          = f.fields_for :properties, @item.properties.new do |property|
             %li
-              = option.name
-              = property.collection_select(:option_value_id, option.option_values.all, :id, :value)
+              = render partial: option.option_element_type.underscore, locals: { property: property, option: option, f: f}
   = f.submit "Create new"

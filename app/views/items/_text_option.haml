@@ -1,0 +1,4 @@
+= option.name
+= property.fields_for :option_value, option.option_values.new do |ov|
+  = ov.hidden_field :option_id, value: option.id
+  = ov.text_field :value
