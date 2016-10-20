@@ -1,0 +1,23 @@
+%h1
+= form_for @product do |f|
+  %p
+    = f.label :name
+  %p
+    = f.text_field :name
+
+  = f.hidden_field :category_id, value: @category.id
+
+  %div
+    = f.fields_for :details do |details_form|
+      - @product['details']['groups'].each do |group|
+        = details_form.fields_for "groups", index: '' do |groups_form|
+          = group['name']
+          = groups_form.hidden_field :name, value: group['name']
+          - group['options'].each do |option|
+            = groups_form.fields_for "options", index: '' do |options_form|
+              %p
+                = option['name']
+                = options_form.hidden_field :name, value: option['name']
+                = options_form.text_field :value, value: option['value']
+              -#= render partial: option.option_element_type.underscore, locals: { option: option, f: options_form }
+  = f.submit "Edit product"

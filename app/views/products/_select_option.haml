@@ -1,0 +1,4 @@
+=# option.name
+- values = option.option_values.map{ |v| [v.value_element.value, v.id] }
+= f.hidden_field :name, value: option.name
+= f.select(:value, options_for_select(values), include_blank: true)

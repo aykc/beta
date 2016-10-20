@@ -1,10 +1,10 @@
 class OptionValue < ActiveRecord::Base
   before_validation :save_value
   belongs_to :option
-  belongs_to :value_element, polymorphic: true
+  belongs_to :value_element, polymorphic: true, dependent: :destroy
   has_one :option_group, through: :option
 #  has_and_belongs_to_many :items
-  has_many :properties
+  has_many :properties, dependent: :destroy
   has_many :items, through: :properties
 
 #  delegate :value, to: :value_element, allow_nil: true

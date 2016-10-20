@@ -1,18 +1,21 @@
 %a
   = link_to "back", items_path
 
-%p
-  = @item.category.name
 %h1
-  = @item.name
-%div
-  - @item.option_groups.each do |group|
-    %p
-      = group.name
-    %ul
-      - group.options.each do |option|
-        %li
-          = option.option_element.class.to_s + ' - ' + option.name + ':'
-          - option.option_values.each do |value|
-            %ol
-              = value.value_element.value
+  = @item.category.name
+= form_for @item do |f|
+  %p
+    = f.label :name
+  %p
+    = f.text_field :name
+  = f.hidden_field :category_id, value: @item.category.id
+  %div
+    - @item.option_groups.each do |group|
+      %p
+        = group.name
+      %ul
+        - group.options.each do |option|
+          = f.fields_for :properties, @item.properties.new do |property|
+            %li
+              = render partial: option.option_element_type.underscore, locals: { property: property, option: option, f: f}
+  = f.submit "Create new"

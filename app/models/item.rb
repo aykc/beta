@@ -1,4 +1,5 @@
 class Item < ActiveRecord::Base
+  attr_accessor :details
   belongs_to :category
 #  has_and_belongs_to_many :option_values
   has_many :properties
@@ -16,3 +17,5 @@ class Item < ActiveRecord::Base
   accepts_nested_attributes_for :properties
   accepts_nested_attributes_for :option_values
 end
+
+# g = OptionGroup.joins(options: :option_values).joins("left join (#{sub}) p on p.option_value_id = option_values.id").includes(options: :option_values)

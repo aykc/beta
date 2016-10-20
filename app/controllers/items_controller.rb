@@ -15,13 +15,13 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    @item = Item.includes(:category, option_groups: [options: [:option_element, option_values: :value_element]]).find(params[:id])
+    @item = Item.joins(option_groups: [options: :option_values]).includes(:category, option_groups: [options: [option_values: :value_element]]).find(params[:id])
   end
 
   def create
     @item = Item.new(item_params)
-    @item.save!
-    redirect_to @item
+    #@item.save!
+    #redirect_to @item
   end
 
   private

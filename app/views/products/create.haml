@@ -1,0 +1,13 @@
+%div
+  =params['product']['details']['options'].inspect
+  =debug(params)
+  =debug(@p)
+
+-# @product.details[:options].each do |option|
+  = option[:name]
+  = option[:value]
+
+= debug(@product)
+
+%a
+  = link_to "back", products_path

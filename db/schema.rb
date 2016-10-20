@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804192628) do
+ActiveRecord::Schema.define(version: 20160914063803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,26 +32,23 @@ ActiveRecord::Schema.define(version: 20160804192628) do
     t.integer  "category_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["category_id"], name: "index_items_on_category_id", using: :btree
   end
-
-  add_index "items", ["category_id"], name: "index_items_on_category_id", using: :btree
 
   create_table "items_option_values", force: :cascade do |t|
     t.integer "item_id"
     t.integer "option_value_id"
+    t.index ["item_id"], name: "index_items_option_values_on_item_id", using: :btree
+    t.index ["option_value_id"], name: "index_items_option_values_on_option_value_id", using: :btree
   end
-
-  add_index "items_option_values", ["item_id"], name: "index_items_option_values_on_item_id", using: :btree
-  add_index "items_option_values", ["option_value_id"], name: "index_items_option_values_on_option_value_id", using: :btree
 
   create_table "option_groups", force: :cascade do |t|
     t.string   "name"
     t.integer  "category_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["category_id"], name: "index_option_groups_on_category_id", using: :btree
   end
-
-  add_index "option_groups", ["category_id"], name: "index_option_groups_on_category_id", using: :btree
 
   create_table "option_values", force: :cascade do |t|
     t.integer  "option_id"
@@ -60,10 +56,9 @@ ActiveRecord::Schema.define(version: 20160804192628) do
     t.datetime "updated_at",         null: false
     t.integer  "value_element_id"
     t.string   "value_element_type"
+    t.index ["option_id"], name: "index_option_values_on_option_id", using: :btree
+    t.index ["value_element_type", "value_element_id"], name: "index_option_values_on_value_element_type_and_value_element_id", using: :btree
   end
-
-  add_index "option_values", ["option_id"], name: "index_option_values_on_option_id", using: :btree
-  add_index "option_values", ["value_element_type", "value_element_id"], name: "index_option_values_on_value_element_type_and_value_element_id", using: :btree
 
   create_table "options", force: :cascade do |t|
     t.string   "name"
@@ -73,20 +68,28 @@ ActiveRecord::Schema.define(version: 20160804192628) do
     t.integer  "option_element_id"
     t.string   "option_element_type"
     t.string   "value_type"
+    t.index ["option_element_type", "option_element_id"], name: "index_options_on_option_element_type_and_option_element_id", using: :btree
+    t.index ["option_group_id"], name: "index_options_on_option_group_id", using: :btree
   end
 
-  add_index "options", ["option_element_type", "option_element_id"], name: "index_options_on_option_element_type_and_option_element_id", using: :btree
-  add_index "options", ["option_group_id"], name: "index_options_on_option_group_id", using: :btree
+  create_table "products", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "category_id"
+    t.jsonb    "details",     default: "{}", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["category_id"], name: "index_products_on_category_id", using: :btree
+    t.index ["details"], name: "index_products_on_details", using: :btree
+  end
 
   create_table "properties", force: :cascade do |t|
     t.integer  "item_id"
     t.integer  "option_value_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.index ["item_id"], name: "index_properties_on_item_id", using: :btree
+    t.index ["option_value_id"], name: "index_properties_on_option_value_id", using: :btree
   end
-
-  add_index "properties", ["item_id"], name: "index_properties_on_item_id", using: :btree
-  add_index "properties", ["option_value_id"], name: "index_properties_on_option_value_id", using: :btree
 
   create_table "select_options", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -110,6 +113,7 @@ ActiveRecord::Schema.define(version: 20160804192628) do
   add_foreign_key "option_groups", "categories"
   add_foreign_key "option_values", "options"
   add_foreign_key "options", "option_groups"
+  add_foreign_key "products", "categories"
   add_foreign_key "properties", "items"
   add_foreign_key "properties", "option_values"
 end

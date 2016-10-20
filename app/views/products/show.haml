@@ -1,0 +1,10 @@
+%h1
+  = @product.name
+%div
+  - @product.details['groups'].each do |group|
+    %ul
+      = group['name']
+      %ol
+        - group['options'].each do |option|
+          %ol
+            = option['name'] + " : " + option['value']
