@@ -20,4 +20,25 @@
                 = options_form.hidden_field :name, value: option['name']
                 = options_form.text_field :value, value: option['value']
               -#= render partial: option.option_element_type.underscore, locals: { option: option, f: options_form }
+
+  = f.submit "Edit product"
+
+= form_for @product do |f|
+  %p
+    = f.label :name
+  %p
+    = f.text_field :name
+
+  = f.hidden_field :category_id, value: @category.id
+
+  %div
+    = f.fields_for :details, @product do |details_form|
+      = details_form.fields_for :spec_groups do |groups_form|
+        = groups_form.label :name, groups_form.object.name
+        = groups_form.hidden_field :name
+        = groups_form.fields_for :spec_options do |options_form|
+          %ul
+            = options_form.hidden_field :name
+            = options_form.label :value, options_form.object.name
+            = options_form.text_field :value
   = f.submit "Edit product"

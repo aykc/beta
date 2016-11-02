@@ -21,21 +21,25 @@ class ProductsController < ApplicationController
   def edit
     @product = Product.find params[:id]
     @category = @product.category
+
+    # p.details['groups'].inject{|g| g['options'].detect{|opt| opt['name'] == 'color'} }
+
   end
 
   def update
     @product = Product.find params[:id]
     @product.update_attributes(product_params)
-    if @product.save
-      redirect_to @product
-    else
-      render 'edit'
-    end
+#     if @product.save
+#       redirect_to @product
+#     else
+#       render 'edit'
+#     end
   end
 
   public
     def product_params
-      params.require(:product).permit(:id, :name, :category_id, details: permit_recursive_params(params[:product][:details]))
+#       params.require(:product).permit(:id, :name, :category_id, details: permit_recursive_params(params[:product][:details]))
+      params.require(:product).permit(:id, :name, :category_id, details: [spec_groups_attributes:[:name, spec_options_attributes:[:name, :value]]])
     end
 
     def permit_recursive_params(params)
